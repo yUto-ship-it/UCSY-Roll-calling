@@ -255,7 +255,7 @@
     // Initialize Models
     async function initModels() {
         try {
-            const MODEL_URL = '/models';
+            const MODEL_URL = 'https://raw.githubusercontent.com/yUto-ship-it/UCSY-Roll-calling/main/models';
             await Promise.all([
                 faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
                 faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
