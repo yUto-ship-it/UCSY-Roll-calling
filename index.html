@@ -1,1027 +1,911 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kyaw Nyein Chan Htwe (yUto) - Beginner Web Developer Portfolio. CS Student at UCSY, Myanmar.">
-    <meta name="keywords" content="yUto, Kyaw Nyein Chan Htwe, Web Developer, Portfolio, Myanmar, UCSY">
-    <meta name="author" content="Kyaw Nyein Chan Htwe">
-    <title>yUto | Portfolio</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UCSY Smart Roll Call</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
     <style>
-        :root {
-            --bg-color: #0b1120;
-            --card-bg: #111a2e;
-            --primary-blue: #0ea5e9;
-            --text-white: #f8fafc;
-            --text-gray: #94a3b8;
-            --glow-shadow: 0 0 20px rgba(14, 165, 233, 0.4);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        html {
-            overscroll-behavior: none;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-white);
-            overflow-x: hidden;
-            overscroll-behavior: none;
-        }
-
-        /* --- Sidebar Navigation --- */
-        .sidebar {
-            position: fixed;
-            left: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 60px;
-            background: rgba(17, 26, 46, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 25px;
-            border: 1px solid rgba(14, 165, 233, 0.3);
-            box-shadow: var(--glow-shadow);
-            z-index: 1000;
-        }
-
-        .sidebar i {
-            font-size: 1.5rem;
-            color: var(--text-gray);
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .sidebar i.active,
-        .sidebar i:hover {
-            color: var(--primary-blue);
-            text-shadow: 0 0 10px var(--primary-blue);
-        }
-
-        /* --- Sections Layout --- */
-        section {
-            min-height: 100vh;
-            padding: 60px 100px 60px 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* --- Hero Section --- */
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 4px solid var(--primary-blue);
-            margin: 0 auto 20px;
-            display: block;
-            object-fit: cover;
-            box-shadow: 0 0 25px rgba(14, 165, 233, 0.5);
-            padding: 5px;
-            transition: transform 0.3s ease;
-        }
-
-        .profile-img:hover {
-            transform: scale(1.05);
-        }
-
-        .hero h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-        }
-
-        .hero h1 span {
-            color: var(--primary-blue);
-        }
-
-        .hero h2 {
-            color: var(--primary-blue);
-            font-weight: 400;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-        }
-
-        .hero p {
-            max-width: 600px;
-            color: var(--text-gray);
-            margin-bottom: 30px;
-            line-height: 1.7;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: var(--primary-blue);
-            color: white;
-            box-shadow: var(--glow-shadow);
-        }
-
-        .btn-outline {
-            border: 1px solid var(--text-gray);
-            color: white;
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
-            opacity: 0.9;
-        }
-
-        /* --- Section Titles --- */
-        .section-title,
-        section > h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-
-        section > h1 span,
-        .section-title span,
-        .neon-text {
-            color: var(--primary-blue);
-        }
-
-        /* --- Skills Section --- */
-        .skills-container {
-            display: flex;
-            align-items: center;
-            gap: 50px;
-            text-align: left;
-            width: 100%;
-            max-width: 1000px;
-        }
-
-        .skills-content {
-            flex: 1;
-        }
-
-        .skill-bar {
-            margin-bottom: 20px;
-        }
-
-        .skill-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 0.95rem;
-        }
-
-        .bar-bg {
-            width: 100%;
-            height: 8px;
-            background: #1e293b;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-blue), #38bdf8);
-            box-shadow: var(--glow-shadow);
-            border-radius: 10px;
-            transition: width 1.5s ease;
-        }
-
-        .skills-image {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .skills-image img {
-            width: 100%;
-            max-width: 350px;
-            border-radius: 15px;
-            border: 1px solid rgba(14, 165, 233, 0.3);
-            box-shadow: 0 0 30px rgba(14, 165, 233, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .skills-image img:hover {
-            transform: scale(1.02);
-        }
-
-        /* --- Portfolio Section --- */
-        .portfolio-grid {
-            display: flex;
-            width: 100%;
-            max-width: 1200px;
-            margin: 40px auto;
-            overflow-x: auto;
-            gap: 30px;
-            padding: 60px 5%;
-            scroll-behavior: smooth;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
-            box-sizing: border-box;
-            align-items: center;
-            justify-content: flex-start;
-        }
-
-        .portfolio-grid::-webkit-scrollbar {
-            display: none;
-        }
-
-        .project-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            flex: 0 0 320px;
-            scroll-snap-align: center;
-            opacity: 0.5;
-            transform: scale(0.85);
-        }
-
-        .project-card.active {
-            transform: scale(1.1);
-            opacity: 1;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 30px rgba(14, 165, 233, 0.2);
-            z-index: 2;
-        }
-
-        .project-img {
-            width: 100%;
-            height: 180px;
-            background: #1e293b;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .project-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .project-card:hover .project-img img {
-            transform: translateY(-10px) scale(1.1);
-        }
-
-        .project-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-
-        .project-card a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .tag {
-            background: rgba(14, 165, 233, 0.1);
-            color: var(--primary-blue);
-            padding: 4px 10px;
-            border-radius: 5px;
-            font-size: 0.7rem;
-            margin-right: 5px;
-            display: inline-block;
-            margin-top: 5px;
-        }
-
-        /* --- Background Glow --- */
-        .bg-glow {
-            position: fixed;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, transparent 70%);
-            z-index: -1;
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        /* --- Education Section --- */
-        .education-grid {
-            max-width: 800px;
-            width: 100%;
-            margin: 20px auto 0;
-            text-align: left;
-        }
-
-        .education-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            border: 1px solid rgba(14, 165, 233, 0.3);
-            transition: 0.3s;
-            cursor: pointer;
-            padding: 25px;
-            margin: 0 0 15px 0;
-        }
-
-        .education-card:hover {
-            border-color: var(--primary-blue);
-            transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(14, 165, 233, 0.15);
-        }
-
-        .edu-date {
-            color: var(--primary-blue);
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .edu-title {
-            font-size: 1.2rem;
-            margin: 8px 0;
-        }
-
-        .edu-school {
-            color: var(--text-gray);
-            font-style: italic;
-        }
-
-        .edu-desc {
-            color: var(--text-gray);
-            line-height: 1.7;
-            margin-top: 10px;
-            font-size: 0.9rem;
-        }
-
-        .edu-details {
-            display: none;
-            margin-top: 15px;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-header span {
-            font-size: 0.95rem;
-        }
-
-        .arrow-icon {
-            font-size: 1.5rem;
-            color: var(--primary-blue);
-            transition: 0.3s;
-        }
-
-        .rotate {
-            transform: rotate(180deg);
-        }
-
-        .active-card {
-            border-color: var(--primary-blue) !important;
-            box-shadow: var(--glow-shadow);
-        }
-
-        /* --- Contact Section --- */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            max-width: 1000px;
-            margin: 30px auto 0;
-            text-align: left;
-        }
-
-        .contact-info h3 {
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-
-        .contact-details {
-            margin-top: 30px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            color: var(--text-gray);
-        }
-
-        .contact-item i {
-            font-size: 1.5rem;
-            color: var(--primary-blue);
-        }
-
-        .contact-item a {
-            color: var(--text-gray);
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .contact-item a:hover {
-            color: var(--primary-blue);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(14, 165, 233, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-        }
-
-        .social-links a:hover {
-            background: var(--primary-blue);
-            transform: translateY(-3px);
-            box-shadow: var(--glow-shadow);
-        }
-
-        .social-links a i {
-            font-size: 1.2rem;
-            color: var(--primary-blue);
-        }
-
-        .social-links a:hover i {
-            color: white;
-        }
-
-        .contact-form {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .input-box {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .input-box input,
-        .input-box textarea {
-            width: 100%;
-            padding: 12px 15px;
-            background: #1e293b;
-            border: 1px solid transparent;
-            border-radius: 8px;
-            color: white;
-            outline: none;
-            transition: 0.3s;
-            font-size: 0.95rem;
-        }
-
-        .input-box input:focus,
-        .input-box textarea:focus {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
-        }
-
-        .input-box input::placeholder,
-        .input-box textarea::placeholder {
-            color: #64748b;
-        }
-
-        .send-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary-blue);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: var(--glow-shadow);
-            transition: 0.3s;
-            font-size: 1rem;
-        }
-
-        .send-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-3px);
-        }
-
-        /* --- Footer --- */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-gray);
-            font-size: 0.85rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        /* --- Responsive --- */
-        @media (max-width: 768px) {
-            section {
-                padding: 80px 20px;
-            }
-
-            .sidebar {
-                bottom: 20px;
-                top: auto;
-                left: 50%;
-                transform: translateX(-50%);
-                flex-direction: row;
-                width: auto;
-                padding: 10px 20px;
-                gap: 20px;
-            }
-
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-
-            .hero h2 {
-                font-size: 1rem;
-            }
-
-            .skills-container {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .skills-image {
-                order: -1;
-            }
-
-            .skills-image img {
-                max-width: 250px;
-            }
-
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-
-            .project-card {
-                flex: 0 0 280px;
-            }
-
-            .portfolio-grid {
-                padding: 40px 3%;
-            }
-
-            .btn-group {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            section > h1,
-            .section-title {
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 1.5rem;
-            }
-
-            .sidebar {
-                gap: 15px;
-                padding: 8px 15px;
-            }
-
-            .sidebar i {
-                font-size: 1.2rem;
-            }
-        }
-
-        /* Cursor blink for typing effect */
-        #text::after {
-            content: '|';
-            animation: blink 0.7s infinite;
-            color: var(--primary-blue);
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
+      :root {
+        --primary: #6366f1;
+        --primary-hover: #4f46e5;
+        --primary-light: rgba(99,102,241,0.1);
+        --success: #10b981;
+        --success-hover: #059669;
+        --success-light: rgba(16,185,129,0.1);
+        --danger: #ef4444;
+        --danger-hover: #dc2626;
+        --danger-light: rgba(239,68,68,0.1);
+        --warning: #f59e0b;
+        --warning-hover: #d97706;
+        --bg: #0f172a;
+        --bg-card: rgba(30,41,59,0.85);
+        --bg-input: rgba(51,65,85,0.6);
+        --text-main: #f1f5f9;
+        --text-muted: #94a3b8;
+        --border: rgba(148,163,184,0.15);
+        --glass: rgba(30,41,59,0.7);
+        --shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font-family: "Inter", sans-serif; background: var(--bg); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; overflow-x: hidden; }
+      body::before { content: ''; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 20%, rgba(99,102,241,0.15) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(16,185,129,0.1) 0%, transparent 50%); animation: bgFloat 20s ease-in-out infinite; z-index: 0; }
+      @keyframes bgFloat { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-2%,-2%); } }
+      .container { width: 100%; max-width: 850px; background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 35px; border-radius: 28px; box-shadow: var(--shadow); position: relative; z-index: 1; }
+      .logo-header { text-align: center; margin-bottom: 25px; }
+      .logo-header img { width: 70px; height: 70px; object-fit: contain; border-radius: 50%; border: 3px solid var(--primary); padding: 3px; background: white; }
+      .logo-header h1 { color: var(--text-main); font-weight: 700; font-size: 24px; margin-top: 12px; letter-spacing: -0.5px; }
+      .logo-header p { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+      .tabs { display: flex; justify-content: center; gap: 6px; margin-bottom: 30px; background: rgba(15,23,42,0.5); padding: 6px; border-radius: 16px; border: 1px solid var(--border); }
+      .tab-btn { flex: 1; padding: 12px 10px; cursor: pointer; background: transparent; color: var(--text-muted); border: none; border-radius: 12px; font-size: 13px; font-weight: 500; font-family: inherit; transition: all 0.3s ease; }
+      .tab-btn:hover { color: var(--text-main); background: rgba(99,102,241,0.1); }
+      .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(99,102,241,0.4); font-weight: 600; }
+      .section { display: none; } .active-section { display: block; animation: fadeIn 0.4s ease; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+      h2 { color: var(--text-main); font-weight: 600; font-size: 20px; margin-bottom: 20px; text-align: center; }
+      .form-group { margin-bottom: 14px; }
+      .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+      .form-group input, .form-group select { width: 100%; padding: 13px 16px; border: 1px solid var(--border); background: var(--bg-input); border-radius: 12px; font-family: inherit; font-size: 14px; color: var(--text-main); transition: all 0.3s ease; }
+      .form-group input::placeholder { color: var(--text-muted); }
+      .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.15); background: rgba(51,65,85,0.8); }
+      video { width: 100%; max-width: 400px; border-radius: 16px; display: block; margin: 15px auto; background: #000; box-shadow: 0 8px 30px rgba(0,0,0,0.3); border: 2px solid var(--border); }
+      #qr-reader { width: 100%; max-width: 100%; min-height: 400px; margin: 0 auto; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.3); background: white; }
+      .action-btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; margin-top: 12px; transition: all 0.3s ease; position: relative; overflow: hidden; }
+      .action-btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.35); }
+      .action-btn.success-btn { background: var(--success); }
+      .action-btn.success-btn:hover { background: var(--success-hover); box-shadow: 0 8px 25px rgba(16,185,129,0.35); }
+      .action-btn.danger-btn { background: var(--danger); }
+      .action-btn.danger-btn:hover { background: var(--danger-hover); }
+      .action-btn.warning-btn { background: var(--warning); }
+      .action-btn.warning-btn:hover { background: var(--warning-hover); }
+      button:disabled { background: #475569 !important; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+      .status { text-align: center; font-weight: 500; margin-top: 18px; padding: 14px 18px; border-radius: 12px; font-size: 14px; display: none; }
+      .status.active { display: block; animation: fadeIn 0.3s; }
+      .status.success { background: var(--success-light); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+      .status.error { background: var(--danger-light); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+      .status.loading { background: var(--primary-light); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
+
+      /* Loading Overlay */
+      .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; transition: opacity 0.6s; }
+      .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+      .loader { width: 60px; height: 60px; border: 4px solid rgba(99,102,241,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .loading-overlay p { margin-top: 20px; color: var(--text-main); font-weight: 500; font-size: 15px; }
+      .loading-overlay .progress-bar { width: 200px; height: 4px; background: rgba(99,102,241,0.2); border-radius: 4px; margin-top: 15px; overflow: hidden; }
+      .loading-overlay .progress-fill { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.5s; width: 0%; }
+
+      /* Register Mode Toggle */
+      .mode-toggle { display: flex; gap: 8px; margin-bottom: 20px; background: rgba(15,23,42,0.5); padding: 5px; border-radius: 12px; border: 1px solid var(--border); }
+      .mode-btn { flex: 1; padding: 10px; border: none; border-radius: 9px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.3s; background: transparent; color: var(--text-muted); }
+      .mode-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(99,102,241,0.3); }
+
+      /* Session Info */
+      .session-info { background: var(--primary-light); border: 1px solid rgba(99,102,241,0.2); border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; text-align: center; font-size: 13px; color: #a5b4fc; font-weight: 500; }
+      .session-info span { font-weight: 700; color: var(--text-main); }
+
+      /* Period Selector */
+      .period-selector { background: var(--bg-input); border-radius: 14px; padding: 16px; margin-bottom: 18px; border: 1px solid var(--border); }
+      .period-selector label { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; display: block; }
+      .period-selector select { width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid var(--border); font-family: inherit; font-size: 14px; background: var(--bg-card); color: var(--text-main); }
+
+      /* Admin Table */
+      .admin-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+      .admin-table th { background: var(--primary); color: white; padding: 11px 8px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+      .admin-table td { padding: 10px 8px; border-bottom: 1px solid var(--border); color: var(--text-main); vertical-align: middle; }
+      .admin-table tr:hover { background: rgba(99,102,241,0.05); }
+      .table-container { overflow-x: auto; border-radius: 14px; border: 1px solid var(--border); margin-top: 12px; max-height: none; overflow-y: visible; background: var(--bg-input); }
+      .btn-sm { padding: 6px 12px; border: none; border-radius: 8px; font-size: 11px; font-family: inherit; cursor: pointer; font-weight: 600; transition: 0.2s; }
+      .btn-edit { background: var(--warning); color: white; }
+      .btn-delete { background: var(--danger); color: white; margin-left: 4px; }
+      .btn-sm:hover { opacity: 0.85; transform: scale(1.05); }
+
+      /* Modal */
+      .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center; }
+      .modal-overlay.show { display: flex; }
+      .modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 30px; width: 90%; max-width: 400px; box-shadow: 0 25px 60px rgba(0,0,0,0.4); }
+      .modal h3 { margin: 0 0 20px; color: var(--text-main); text-align: center; font-size: 18px; }
+      .modal input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 14px; margin-bottom: 12px; background: var(--bg-input); color: var(--text-main); }
+      .modal input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
+      .modal-btns { display: flex; gap: 10px; margin-top: 15px; }
+      .modal-btns button { flex: 1; padding: 12px; border: none; border-radius: 10px; font-family: inherit; font-weight: 600; cursor: pointer; font-size: 14px; transition: 0.2s; }
+      .modal-btns .btn-cancel { background: rgba(51,65,85,0.8); color: var(--text-muted); }
+      .modal-btns .btn-cancel:hover { background: rgba(71,85,105,0.8); }
+      .modal-btns .btn-confirm { background: var(--primary); color: white; }
+      .modal-btns .btn-confirm:hover { background: var(--primary-hover); }
+
+      /* Admin Tabs */
+      .admin-tabs { display: flex; gap: 6px; margin-bottom: 18px; justify-content: center; flex-wrap: wrap; }
+      .admin-tab-btn { padding: 9px 16px; border: 1px solid var(--border); background: transparent; border-radius: 10px; font-family: inherit; font-size: 12px; cursor: pointer; transition: 0.2s; color: var(--text-muted); font-weight: 500; }
+      .admin-tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(99,102,241,0.3); }
+      .admin-tab-btn:hover { border-color: var(--primary); color: var(--text-main); }
+
+      /* QR Scan for Register */
+      #reg-qr-reader { width: 100%; max-width: 100%; min-height: 400px; margin: 10px auto; border-radius: 14px; overflow: hidden; background: white; }
+
+      @media (max-width: 600px) {
+        .container { padding: 20px; border-radius: 22px; }
+        .tabs { flex-direction: row; flex-wrap: wrap; }
+        .tab-btn { font-size: 12px; padding: 10px 8px; }
+        .admin-table { font-size: 11px; }
+        .logo-header h1 { font-size: 20px; }
+      }
+
+      /* Custom SweetAlert Dark Theme */
+      .swal2-popup { background: var(--bg-card) !important; border: 1px solid var(--border) !important; border-radius: 20px !important; color: var(--text-main) !important; }
+      .swal2-title { color: var(--text-main) !important; }
+      .swal2-html-container { color: var(--text-muted) !important; }
+      .swal2-confirm { background: var(--primary) !important; border-radius: 10px !important; font-weight: 600 !important; }
+      .swal2-cancel { background: rgba(51,65,85,0.8) !important; border-radius: 10px !important; }
     </style>
-</head>
-
-<body>
-
-    <div class="bg-glow" style="top: -100px; right: -100px;"></div>
-    <div class="bg-glow" style="bottom: -100px; left: -100px;"></div>
-
-    <!-- Sidebar Navigation -->
-    <nav class="sidebar">
-        <i class='bx bxs-home active' onclick="scrollToSection('home')"></i>
-        <i class='bx bxs-user' onclick="scrollToSection('skills')"></i>
-        <i class='bx bxs-briefcase' onclick="scrollToSection('portfolio')"></i>
-        <i class='bx bxs-graduation' onclick="scrollToSection('education')"></i>
-        <i class='bx bxs-envelope' onclick="scrollToSection('contact')"></i>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663623309572/OADKGNvEcZnuPUGN.jpg" alt="Kyaw Nyein Chan Htwe" class="profile-img">
-        <h1>Hi, I'm <span id="text"></span></h1>
-        <h2>Beginner Web Developer & CS Student</h2>
-        <p>I create beautiful, responsive web experiences using modern technologies. Passionate about clean code and user-centered design. Currently studying Computer Science at UCSY.</p>
-        <div class="btn-group">
-            <a href="#portfolio" class="btn btn-primary">View My Work</a>
-            <a href="https://yuto-cv.netlify.app/" class="btn btn-outline download-cv">
-                View My CV <i class='bx bxs-show'></i>
-            </a>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills">
-        <h1 style="margin-bottom: 40px;">My <span>Skills</span></h1>
-        <div class="skills-container">
-            <div class="skills-content">
-                <p style="margin-bottom: 30px; color: var(--text-gray); line-height: 1.7;">
-                    I'm a passionate web developer with less than 1 year of experience creating modern, responsive websites and web applications.
-                </p>
-                <div class="skill-bar">
-                    <div class="skill-info"><span>HTML</span><span>90%</span></div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width: 90%;"></div>
-                    </div>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-info"><span>CSS</span><span>85%</span></div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width: 85%;"></div>
-                    </div>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-info"><span>JavaScript</span><span>60%</span></div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width: 60%;"></div>
-                    </div>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-info"><span>Python</span><span>55%</span></div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width: 55%;"></div>
-                    </div>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-info"><span>React.js</span><span>25%</span></div>
-                    <div class="bar-bg">
-                        <div class="bar-fill" style="width: 25%;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="skills-image">
-                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663623309572/PrXSswZxPFpvqNxT.jpg" alt="Skills Banner">
-            </div>
-        </div>
-    </section>
-
-    <!-- Portfolio Section -->
-    <section id="portfolio">
-        <h1>My <span>Portfolio</span></h1>
-        <p style="color: var(--text-gray); margin-bottom: 10px;">A collection of my recent projects</p>
-
-        <div class="portfolio-grid">
-            <div class="project-card">
-                <a href="https://smart-meter-calc.vercel.app/" target="_blank">
-                    <div class="project-img">
-                        <img src="meter.jpg" alt="Smart Meter Calculator">
-                    </div>
-                </a>
-                <h3>Smart Meter Bill Calculator</h3>
-                <p style="font-size: 0.8rem; color: var(--text-gray); margin: 10px 0;">An electricity bill calculator for Myanmar using smart meter rates.</p>
-                <div>
-                    <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <a href="https://wanderwise360.vercel.app/" target="_blank">
-                    <div class="project-img">
-                        <img src="wander.jpg" alt="WanderWise 360">
-                    </div>
-                </a>
-                <h3>WanderWise 360</h3>
-                <p style="font-size: 0.8rem; color: var(--text-gray); margin: 10px 0;">A travel guide web app for exploring destinations worldwide.</p>
-                <div>
-                    <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <a href="https://tracker-yuto.vercel.app/" target="_blank">
-                    <div class="project-img">
-                        <img src="tracker.jpg" alt="Expense Tracker">
-                    </div>
-                </a>
-                <h3>Expense Tracker for Myanmar</h3>
-                <p style="font-size: 0.8rem; color: var(--text-gray); margin: 10px 0;">A personal finance tracker designed for Myanmar users.</p>
-                <div>
-                    <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
-                </div>
-            </div>
-             <div class="project-card">
-                <a href="https://ucsy-smar-attendance.netlify.app/" target="_blank">
-                    <div class="project-img">
-                        <img src="rollcall.jpg" alt="Expense Tracker">
-                    </div>
-                </a>
-                <h3>UCSY Smart Roll Call</h3>
-                <p style="font-size: 0.8rem; color: var(--text-gray); margin: 10px 0;">UCSY Smart Roll Call — a web app built with HTML, CSS, and JavaScript, using QR scanning and face recognition to automate student attendance.
-It features an admin dashboard with real‑time tracking and CSV export for efficient record management.</p>
-                <div>
-                    <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education Section -->
-    <section id="education">
-        <h1 class="section-title" style="margin-bottom:15px;">Academic <span class="neon-text">Core</span></h1>
-        <div class="education-grid">
-            <div class="education-card">
-                <div class="card-header">
-                    <span><span style="color: var(--primary-blue);">Current 2026, </span>The beginning of the Technological Journey</span>
-                    <i class='bx bx-chevron-down arrow-icon'></i>
-                </div>
-                <div class="edu-details">
-                    <h3 class="edu-title">Computer Science Degree</h3>
-                    <span class="edu-school">University of Computer Studies, Yangon (UCSY)</span>
-                    <p class="edu-desc">After graduating high school with outstanding academic records, I pursued my passion for technology by enrolling at the University of Computer Studies, Yangon (UCSY), one of Myanmar's premier technological institutions. Currently, I am dedicated to studying Computer Science and Technology at UCSY. My ultimate goal is to become a skilled IT professional who can actively contribute to the advancement of Myanmar's technological landscape.</p>
-                </div>
-            </div>
-
-            <div class="education-card">
-                <div class="card-header">
-                    <span><span style="color: var(--primary-blue);">(2022 - 2025) </span>Urban Transitions and Educational Maturity</span>
-                    <i class='bx bx-chevron-down arrow-icon'></i>
-                </div>
-                <div class="edu-details">
-                    <h3 class="edu-title">Urban Transitions and Educational Maturity</h3>
-                    <span class="edu-school">Multiple Schools - Pyin Oo Lwin & Myitkyina</span>
-                    <p class="edu-desc">The year 2022, when I was 16 years old, marked a significant turning point in my life. Seeking a broader and more diverse educational environment, I made a definitive move to Pyin Oo Lwin to attend Grade 10. This transition to a new city was not just a change of location, but an opportunity to broaden my academic horizons. Subsequently, I returned to my hometown, Myitkyina, where I completed my senior high school years. I attended No. 9 Basic Education High School (BEHS-9, Myitkyina) for Grade 11 and pursued my final year, Grade 12, at Shwe Pyi Thit Private High School. The experience of moving between different cities and schools during these formative years has been invaluable. It has gifted me with the ability to adapt quickly to new environments and the essential skill of communicating effectively across diverse social circles. These transitions have fostered a sense of resilience and maturity that I carry with me into my current university life at UCSY.</p>
-                </div>
-            </div>
-
-            <div class="education-card">
-                <div class="card-header">
-                    <span><span style="color: var(--primary-blue);">(2006 - 2010) </span>Beginnings and Early Childhood</span>
-                    <i class='bx bx-chevron-down arrow-icon'></i>
-                </div>
-                <div class="edu-details">
-                    <h3 class="edu-title">Beginnings and Early Childhood</h3>
-                    <span class="edu-school">Myitkyina & Thabeikkyin</span>
-                    <p class="edu-desc">My life journey began on November 20, 2006, in Myitkyina, the capital of Kachin State, situated along the scenic banks of the Ayeyarwady River. In 2010, at the age of four, my family and I relocated to Thabeikkyin. It was in this town that I spent my formative early years, cultivating the fundamental values and educational roots that would shape my future. These early experiences in Thabeikkyin laid a solid foundation for my growth, teaching me the importance of community and learning from a very young age.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact">
-        <h1 style="margin-bottom:10px;">Contact <span>Me</span></h1>
-        <div class="contact-container">
-            <div class="contact-info">
-                <h3>Let's work together!</h3>
-                <p style="color: var(--text-gray); line-height: 1.7;">I am available for freelance work and collaboration opportunities. Reach out and let's build something amazing together.</p>
-
-                <div class="contact-details">
-                    <div class="contact-item">
-                        <i class='bx bxs-envelope'></i>
-                        <span>knchtwe@gmail.com</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class='bx bxs-phone'></i>
-                        <span>+95 9 673586673</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class='bx bxs-map'></i>
-                        <span>Pyin Oo Lwin, Myanmar</span>
-                    </div>
-                    <div class="contact-item social-links">
-                        <a href="https://www.facebook.com/share/1Cj6KyDR1V/" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-                        <a href="https://www.tiktok.com/@yuto83229?_r=1&_t=ZS-95MkWdwy1DB" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-                        <a href="https://t.me/yuto487" target="_blank"><i class="fa-brands fa-telegram"></i></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="contact-form">
-                <form id="myContactForm" action="https://formspree.io/f/xqegonpy" method="POST">
-                    <div class="input-box">
-                        <input type="text" placeholder="Your Name" name="name" required>
-                    </div>
-                    <div class="input-box">
-                        <input type="email" placeholder="Your Email" name="email" required>
-                    </div>
-                    <div class="input-box">
-                        <textarea placeholder="Your Message" name="message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="send-btn">Send Message <i class='bx bx-send'></i></button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <div class="footer">
-        <p>&copy; 2026 Kyaw Nyein Chan Htwe (yUto). All Rights Reserved.</p>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  </head>
+  <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+      <div class="loader"></div>
+      <p id="loading-text">Initializing AI Models...</p>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
     </div>
 
-    <script>
-        // --- Scroll to Section ---
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-            document.querySelectorAll('.sidebar i').forEach(icon => icon.classList.remove('active'));
-            event.target.classList.add('active');
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="edit-modal">
+      <div class="modal">
+        <h3>✏️ Edit Student</h3>
+        <input type="text" id="edit-ykpt" placeholder="YKPT ID" readonly style="opacity:0.6;" />
+        <input type="text" id="edit-name" placeholder="Student Name" />
+        <input type="text" id="edit-major" placeholder="Major" />
+        <input type="email" id="edit-email" placeholder="Student Email" />
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+          <button class="btn-confirm" onclick="saveEdit()">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Password Modal -->
+    <div class="modal-overlay" id="password-modal">
+      <div class="modal">
+        <h3>🔒 Admin Access</h3>
+        <p style="text-align:center; color:var(--text-muted); font-size:13px; margin-bottom:15px;">Enter password to access dashboard</p>
+        <input type="password" id="admin-password" placeholder="Password" onkeypress="if(event.key==='Enter')checkAdminPassword()" />
+        <div id="pw-error" style="color:#fca5a5; font-size:12px; text-align:center; margin-top:5px; display:none;">Wrong password!</div>
+        <div class="modal-btns">
+          <button class="btn-cancel" onclick="cancelAdminLogin()">Cancel</button>
+          <button class="btn-confirm" onclick="checkAdminPassword()">Login</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="logo-header">
+        <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663623309572/HIPaxxPAQXhRlaLT.jpg" alt="UCSY Logo" />
+        <h1>UCSY Smart Roll Call</h1>
+        <p>University of Computer Studies, Yangon</p>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-register" onclick="showSection('register', this)">Register</button>
+        <button class="tab-btn" id="tab-rollcall" onclick="showSection('rollcall', this)">Roll Call</button>
+        <button class="tab-btn" id="tab-admin" onclick="requestAdminAccess(this)">Dashboard</button>
+      </div>
+
+      <!-- Registration Section -->
+      <div id="register" class="section active-section">
+        <h2>Student Registration</h2>
+        <!-- Mode Toggle: Manual or QR Scan -->
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="mode-manual" onclick="setRegMode('manual')">✍️ Manual Input</button>
+          <button class="mode-btn" id="mode-qr" onclick="setRegMode('qr')">📱 QR Scan</button>
+        </div>
+        <!-- QR Scanner for Registration -->
+        <div id="reg-qr-section" style="display:none;">
+          <p style="text-align:center; color:var(--text-muted); font-size:13px; margin-bottom:10px;">Scan student QR code to auto-fill info</p>
+          <div id="reg-qr-reader"></div>
+          <div id="reg-qr-status" class="status"></div>
+        </div>
+        <!-- Manual Form -->
+        <div id="reg-manual-section">
+          <div class="form-group">
+            <label>YKPT ID *</label>
+            <input type="text" id="reg-ykpt" placeholder="e.g., 23344" />
+          </div>
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="reg-name" placeholder="e.g., Aung Aung" />
+          </div>
+          <div class="form-group">
+            <label>Major</label>
+            <input type="text" id="reg-major" placeholder="e.g., B.C.Sc. / B.C.Tech" />
+          </div>
+          <div class="form-group">
+            <label>Student Email</label>
+            <input type="email" id="reg-email" placeholder="e.g., student@ucsy.edu.mm" />
+          </div>
+        </div>
+        <button class="action-btn" id="btn-start-reg" onclick="startRegisterCamera()">📷 Scan Face & Register</button>
+        <video id="reg-video" autoplay muted playsinline></video>
+        <div id="reg-status" class="status"></div>
+        <button class="action-btn success-btn" id="btn-save-data" style="display:none" onclick="saveRegistration()">💾 Save Registration</button>
+      </div>
+
+      <!-- Roll Call Section -->
+      <div id="rollcall" class="section">
+        <h2>Take Roll Call</h2>
+        <div class="period-selector">
+          <label>📅 Select Period / Session</label>
+          <select id="roll-period">
+            <option value="Period 1 (9:00 - 10:00)">Period 1 (9:00 - 10:00)</option>
+            <option value="Period 2 (10:00 - 11:00)">Period 2 (10:00 - 11:00)</option>
+            <option value="Period 3 (11:00 - 12:00)">Period 3 (11:00 - 12:00)</option>
+            <option value="Period 4 (12:00 - 1:00)">Period 4 (12:00 - 1:00)</option>
+            <option value="Period 5 (1:00 - 2:00)">Period 5 (1:00 - 2:00)</option>
+            <option value="Period 6 (2:00 - 3:00)">Period 6 (2:00 - 3:00)</option>
+            <option value="Period 7 (3:00 - 4:00)">Period 7 (3:00 - 4:00)</option>
+            <option value="Period 8 (4:00 - 5:00)">Period 8 (4:00 - 5:00)</option>
+          </select>
+        </div>
+        <div class="session-info">
+          <span id="session-display">Period 1 (9:00 - 10:00)</span> &bull; <span id="session-date"></span>
+        </div>
+        <div id="qr-reader"></div>
+        <div id="face-verification-section" style="display:none; margin-top:20px;">
+          <p style="text-align:center; color:var(--text-muted); font-size:14px;">Verifying:</p>
+          <p style="text-align:center;"><span id="scanned-ykpt-display" style="color:var(--primary); font-size:22px; font-weight:700;"></span></p>
+          <video id="verify-video" autoplay muted playsinline></video>
+          <button class="action-btn success-btn" id="btn-verify" onclick="verifyFace()">✔️ Verify & Record Attendance</button>
+        </div>
+        <div id="roll-status" class="status"></div>
+      </div>
+
+      <!-- Admin Section -->
+      <div id="admin" class="section">
+        <h2>📋 Admin Dashboard</h2>
+        <div class="admin-tabs">
+          <button class="admin-tab-btn active" onclick="showAdminTab('students', this)">👥 Students</button>
+          <button class="admin-tab-btn" onclick="showAdminTab('attendance', this)">📅 Attendance</button>
+          <button class="admin-tab-btn" onclick="showAdminTab('export', this)">📊 Export</button>
+        </div>
+        <div id="admin-students" class="admin-section-content">
+          <button class="action-btn" onclick="loadStudents()" style="margin-bottom:12px;">🔄 Load Students</button>
+          <div class="table-container" id="students-table-container">
+            <p style="text-align:center; padding:25px; color:var(--text-muted);">Click "Load Students" to view</p>
+          </div>
+        </div>
+        <div id="admin-attendance" class="admin-section-content" style="display:none;">
+          <div class="form-group" style="max-width:300px; margin:0 auto 12px;">
+            <select id="filter-period" style="width:100%; padding:11px; border-radius:10px; border:1px solid var(--border); font-family:inherit; font-size:13px; background:var(--bg-input); color:var(--text-main);">
+              <option value="all">All Periods</option>
+              <option value="Period 1 (9:00 - 10:00)">Period 1</option>
+              <option value="Period 2 (10:00 - 11:00)">Period 2</option>
+              <option value="Period 3 (11:00 - 12:00)">Period 3</option>
+              <option value="Period 4 (12:00 - 1:00)">Period 4</option>
+              <option value="Period 5 (1:00 - 2:00)">Period 5</option>
+              <option value="Period 6 (2:00 - 3:00)">Period 6</option>
+              <option value="Period 7 (3:00 - 4:00)">Period 7</option>
+              <option value="Period 8 (4:00 - 5:00)">Period 8</option>
+            </select>
+          </div>
+          <button class="action-btn" onclick="loadAttendance()" style="margin-bottom:12px;">🔄 Load Attendance</button>
+          <div class="table-container" id="attendance-table-container">
+            <p style="text-align:center; padding:25px; color:var(--text-muted);">Click "Load Attendance" to view</p>
+          </div>
+        </div>
+        <div id="admin-export" class="admin-section-content" style="display:none;">
+          <p style="text-align:center; color:var(--text-muted); font-size:13px; margin-bottom:18px;">Export data to CSV</p>
+          <button class="action-btn success-btn" onclick="exportToCSV()">📊 Attendance CSV</button>
+          <button class="action-btn warning-btn" onclick="exportStudentsCSV()">👥 Students List CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+      import { getDatabase, ref, set, get, child, push, remove } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAF_N4YtuhFnbZx1DEej6oAq28HlqHoudI",
+        authDomain: "login-bbb60.firebaseapp.com",
+        projectId: "login-bbb60",
+        storageBucket: "login-bbb60.firebasestorage.app",
+        messagingSenderId: "493152808428",
+        appId: "1:493152808428:web:97a2e23335dc1e1840a4c9",
+        databaseURL: "https://login-bbb60-default-rtdb.firebaseio.com",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      const ADMIN_PASSWORD = "ucsy2026";
+      let adminLoggedIn = false;
+      let editingYKPT = "";
+      let faceModelsLoaded = false;
+      let currentDescriptor = null;
+      let registeredDescriptor = null;
+      let scannedQRData = "";
+      let scannedYKPT = "";
+      let html5QrcodeScanner = null;
+      let regQrScanner = null;
+
+      // Toast notification
+      const Toast = Swal.mixin({
+        toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true,
+        background: '#1e293b', color: '#f1f5f9',
+        didOpen: (toast) => { toast.onmouseenter = Swal.stopTimer; toast.onmouseleave = Swal.resumeTimer; }
+      });
+
+      document.getElementById("session-date").textContent = new Date().toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+      document.getElementById("roll-period").addEventListener("change", function() {
+        document.getElementById("session-display").textContent = this.value;
+      });
+
+      // --- Load Models ---
+      async function loadModels() {
+        const overlay = document.getElementById("loading-overlay");
+        const loadingText = document.getElementById("loading-text");
+        const progressFill = document.getElementById("progress-fill");
+        try {
+          const MODEL_URL = "https://justadudewhohacks.github.io/face-api.js/models";
+          loadingText.textContent = "Loading Face Detection...";
+          progressFill.style.width = "20%";
+          await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+          loadingText.textContent = "Loading Face Landmarks...";
+          progressFill.style.width = "50%";
+          await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+          loadingText.textContent = "Loading Face Recognition...";
+          progressFill.style.width = "80%";
+          await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+          faceModelsLoaded = true;
+          progressFill.style.width = "100%";
+          loadingText.textContent = "✅ Ready!";
+          setTimeout(() => overlay.classList.add("hidden"), 600);
+        } catch (e) {
+          loadingText.textContent = "❌ Error loading models. Check internet.";
+          progressFill.style.width = "100%";
+          progressFill.style.background = "#ef4444";
+          setTimeout(() => overlay.classList.add("hidden"), 3000);
         }
+      }
+      loadModels();
 
-        // --- Scroll Reveal Animation ---
-        function revealSections() {
-            const sections = document.querySelectorAll('section');
-            sections.forEach(section => {
-                const windowHeight = window.innerHeight;
-                const revealTop = section.getBoundingClientRect().top;
-                const revealPoint = 150;
-                if (revealTop < windowHeight - revealPoint) {
-                    section.classList.add('visible');
-                }
-            });
+      // --- Register Mode Toggle ---
+      window.setRegMode = function(mode) {
+        document.getElementById("mode-manual").classList.toggle("active", mode === "manual");
+        document.getElementById("mode-qr").classList.toggle("active", mode === "qr");
+        document.getElementById("reg-manual-section").style.display = mode === "manual" ? "block" : "none";
+        document.getElementById("reg-qr-section").style.display = mode === "qr" ? "block" : "none";
+        if (mode === "qr") {
+          startRegQRScanner();
+        } else {
+          if (regQrScanner) { try { regQrScanner.stop(); regQrScanner.clear(); } catch(e){} }
         }
+      };
 
-        // --- Active Sidebar Icon on Scroll ---
-        function updateActiveNav() {
-            let current = '';
-            const sections = document.querySelectorAll('section');
-            const navIcons = document.querySelectorAll('.sidebar i');
-
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= (sectionTop - 200)) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navIcons.forEach(icon => {
-                icon.classList.remove('active');
-                const onclick = icon.getAttribute('onclick');
-                if (onclick && onclick.includes(current)) {
-                    icon.classList.add('active');
-                }
-            });
-        }
-
-        // Combined scroll listener
-        window.addEventListener('scroll', () => {
-            revealSections();
-            updateActiveNav();
+      function startRegQRScanner() {
+        const statusEl = document.getElementById("reg-qr-status");
+        statusEl.className = "status active loading";
+        statusEl.innerHTML = "📷 Scanning QR code...";
+        if (regQrScanner) { try { regQrScanner.stop(); regQrScanner.clear(); } catch(e){} }
+        regQrScanner = new Html5Qrcode("reg-qr-reader");
+        const config = { fps: 10, disableFlip: false };
+        regQrScanner.start(
+          { facingMode: "environment" }, config,
+          (decodedText) => {
+            regQrScanner.stop().then(() => { document.getElementById("reg-qr-reader").innerHTML = ""; }).catch(e=>{});
+            // Parse QR: format "Name/YKPT/Major/Year/Email" or just YKPT
+            const parts = decodedText.split("/");
+            if (parts.length >= 2) {
+              document.getElementById("reg-name").value = parts[0].trim();
+              document.getElementById("reg-ykpt").value = parts[1].replace(/YKPT-/gi,"").trim();
+              if (parts[2]) document.getElementById("reg-major").value = parts[2].trim();
+              if (parts[4]) document.getElementById("reg-email").value = parts[4].trim();
+            } else {
+              document.getElementById("reg-ykpt").value = decodedText.replace(/YKPT-/gi,"").trim();
+            }
+            statusEl.className = "status active success";
+            statusEl.innerHTML = "✅ QR scanned! Info filled. Now scan face.";
+            // Switch to manual view to show filled form
+            document.getElementById("reg-manual-section").style.display = "block";
+            Toast.fire({ icon: 'success', title: 'QR Code Scanned!' });
+          },
+          (err) => {}
+        ).catch(err => {
+          statusEl.className = "status active error";
+          statusEl.innerHTML = "❌ Camera access denied.";
         });
+      }
 
-        // --- Portfolio Card IntersectionObserver ---
-        const grid = document.querySelector('.portfolio-grid');
-        const cards = document.querySelectorAll('.project-card');
+      // --- Admin Password ---
+      window.requestAdminAccess = function(btnElement) {
+        if (adminLoggedIn) { showSection('admin', btnElement); return; }
+        document.getElementById("password-modal").classList.add("show");
+        document.getElementById("admin-password").value = "";
+        document.getElementById("pw-error").style.display = "none";
+        setTimeout(() => document.getElementById("admin-password").focus(), 100);
+      };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    cards.forEach(c => c.classList.remove('active'));
-                    entry.target.classList.add('active');
-                }
-            });
-        }, {
-            root: grid,
-            threshold: 0.7
+      window.checkAdminPassword = function() {
+        const pw = document.getElementById("admin-password").value;
+        if (pw === ADMIN_PASSWORD) {
+          adminLoggedIn = true;
+          document.getElementById("password-modal").classList.remove("show");
+          showSection('admin', document.getElementById("tab-admin"));
+          Toast.fire({ icon: 'success', title: 'Admin access granted!' });
+        } else {
+          document.getElementById("pw-error").style.display = "block";
+          document.getElementById("admin-password").value = "";
+        }
+      };
+
+      window.cancelAdminLogin = function() {
+        document.getElementById("password-modal").classList.remove("show");
+      };
+
+      // --- Admin Tabs ---
+      window.showAdminTab = function(tab, btn) {
+        document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.admin-section-content').forEach(el => el.style.display = 'none');
+        document.getElementById('admin-' + tab).style.display = 'block';
+      };
+
+      // --- Load Students ---
+      window.loadStudents = async function() {
+        const container = document.getElementById("students-table-container");
+        container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">⏳ Loading...</p>';
+        try {
+          const dbRef = ref(db);
+          const snapshot = await get(child(dbRef, "Students"));
+          if (!snapshot.exists()) {
+            container.innerHTML = '<p style="text-align:center; padding:25px; color:var(--text-muted);">No students registered yet.</p>';
+            return;
+          }
+          let html = '<table class="admin-table"><thead><tr><th>YKPT</th><th>Name</th><th>Major</th><th>Email</th><th>Actions</th></tr></thead><tbody>';
+          snapshot.forEach(childSnap => {
+            const d = childSnap.val();
+            html += `<tr>
+              <td><strong>${d.ykpt || childSnap.key}</strong></td>
+              <td>${d.name || "—"}</td>
+              <td>${d.major || "—"}</td>
+              <td style="font-size:11px;">${d.studentMail || "—"}</td>
+              <td>
+                <button class="btn-sm btn-edit" onclick="openEditModal('${childSnap.key}','${(d.name||"").replace(/'/g,"\\'")}','${(d.major||"").replace(/'/g,"\\'")}','${(d.studentMail||"").replace(/'/g,"\\'")}')">Edit</button>
+                <button class="btn-sm btn-delete" onclick="deleteStudent('${childSnap.key}')">Del</button>
+              </td>
+            </tr>`;
+          });
+          html += '</tbody></table>';
+          container.innerHTML = html;
+        } catch (e) {
+          container.innerHTML = '<p style="text-align:center; padding:20px; color:#fca5a5;">❌ Error loading data.</p>';
+        }
+      };
+
+      // --- Delete Student ---
+      window.deleteStudent = async function(ykpt) {
+        const result = await Swal.fire({
+          title: 'Delete Student?',
+          text: `"${ykpt}" will be permanently removed from database.`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, Delete',
+          cancelButtonText: 'Cancel',
+          confirmButtonColor: '#ef4444',
         });
+        if (!result.isConfirmed) return;
+        try {
+          await remove(ref(db, "Students/" + ykpt));
+          Toast.fire({ icon: 'success', title: 'Student deleted!' });
+          loadStudents();
+        } catch (e) {
+          Swal.fire('Error', 'Failed to delete student.', 'error');
+        }
+      };
 
-        cards.forEach(card => observer.observe(card));
+      // --- Edit Student ---
+      window.openEditModal = function(ykpt, name, major, email) {
+        editingYKPT = ykpt;
+        document.getElementById("edit-ykpt").value = ykpt;
+        document.getElementById("edit-name").value = name;
+        document.getElementById("edit-major").value = major;
+        document.getElementById("edit-email").value = email;
+        document.getElementById("edit-modal").classList.add("show");
+      };
 
-        // --- Contact Form with SweetAlert2 ---
-        const contactForm = document.getElementById('myContactForm');
-        if (contactForm) {
-            contactForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const button = this.querySelector('.send-btn');
-                const formData = new FormData(this);
+      window.closeEditModal = function() {
+        document.getElementById("edit-modal").classList.remove("show");
+      };
 
-                button.innerHTML = 'Sending... <i class="bx bx-loader-alt bx-spin"></i>';
-                button.style.opacity = '0.6';
-                button.disabled = true;
+      window.saveEdit = async function() {
+        const name = document.getElementById("edit-name").value.trim();
+        const major = document.getElementById("edit-major").value.trim();
+        const email = document.getElementById("edit-email").value.trim();
+        try {
+          const dbRef = ref(db);
+          const snap = await get(child(dbRef, `Students/${editingYKPT}`));
+          if (snap.exists()) {
+            const existing = snap.val();
+            await set(ref(db, "Students/" + editingYKPT), { ...existing, name, major, studentMail: email });
+            Toast.fire({ icon: 'success', title: 'Student updated!' });
+            closeEditModal();
+            loadStudents();
+          }
+        } catch (e) {
+          Swal.fire('Error', 'Failed to update student.', 'error');
+        }
+      };
 
-                try {
-                    const response = await fetch(this.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: { 'Accept': 'application/json' }
-                    });
+      // --- Load Attendance ---
+      window.loadAttendance = async function() {
+        const container = document.getElementById("attendance-table-container");
+        const filterPeriod = document.getElementById("filter-period").value;
+        container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--text-muted);">⏳ Loading...</p>';
+        try {
+          const dbRef = ref(db);
+          const snapshot = await get(child(dbRef, "Attendance"));
+          if (!snapshot.exists()) {
+            container.innerHTML = '<p style="text-align:center; padding:25px; color:var(--text-muted);">No attendance records yet.</p>';
+            return;
+          }
+          const records = [];
+          snapshot.forEach(childSnap => { records.push(childSnap.val()); });
+          records.reverse();
+          let filtered = records;
+          if (filterPeriod !== "all") {
+            filtered = records.filter(d => d.period === filterPeriod);
+          }
+          if (filtered.length === 0) {
+            container.innerHTML = `<p style="text-align:center; padding:25px; color:var(--text-muted);">No records for this period.</p>`;
+            return;
+          }
+          let html = '<table class="admin-table"><thead><tr><th>YKPT</th><th>Name</th><th>Period</th><th>Time</th><th>Status</th></tr></thead><tbody>';
+          filtered.forEach(d => {
+            const time = d.timeString || (d.timestamp ? new Date(d.timestamp).toLocaleString() : "N/A");
+            html += `<tr>
+              <td><strong>${d.ykpt || "N/A"}</strong></td>
+              <td>${d.name || "—"}</td>
+              <td style="font-size:11px;">${d.period || "—"}</td>
+              <td style="font-size:11px;">${time}</td>
+              <td><span style="color:#6ee7b7; font-weight:600;">✅</span></td>
+            </tr>`;
+          });
+          html += '</tbody></table>';
+          container.innerHTML = html;
+        } catch (e) {
+          container.innerHTML = '<p style="text-align:center; padding:20px; color:#fca5a5;">❌ Error loading data.</p>';
+        }
+      };
 
-                    if (response.ok) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Message Sent!',
-                            text: 'Thank you! I will get back to you soon.',
-                            background: '#111a2e',
-                            color: '#f8fafc',
-                            confirmButtonColor: '#0ea5e9'
-                        });
-                        this.reset();
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops!',
-                            text: 'Something went wrong. Please try again.',
-                            background: '#111a2e',
-                            color: '#f8fafc',
-                            confirmButtonColor: '#0ea5e9'
-                        });
+      // --- UI Controls ---
+      window.showSection = function (sectionId, btnElement) {
+        document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+        if (btnElement) btnElement.classList.add("active");
+        else document.getElementById("tab-" + sectionId).classList.add("active");
+        document.querySelectorAll(".section").forEach(el => el.classList.remove("active-section"));
+        document.getElementById(sectionId).classList.add("active-section");
+        stopMediaTracks(document.getElementById("reg-video"));
+        stopMediaTracks(document.getElementById("verify-video"));
+        if (html5QrcodeScanner) { try { html5QrcodeScanner.stop().catch(()=>{}); html5QrcodeScanner.clear(); } catch (e) {} html5QrcodeScanner = null; }
+        if (regQrScanner) { try { regQrScanner.stop().catch(()=>{}); regQrScanner.clear(); } catch(e){} regQrScanner = null; }
+        document.getElementById("qr-reader").innerHTML = "";
+        document.querySelectorAll(".status").forEach(el => el.classList.remove("active"));
+        if (sectionId === "rollcall") {
+          document.getElementById("face-verification-section").style.display = "none";
+          startQRScanner();
+        }
+      };
+
+      function setStatus(elementId, message, type) {
+        const el = document.getElementById(elementId);
+        el.className = `status active ${type}`;
+        el.innerHTML = message;
+      }
+
+      function stopMediaTracks(videoEl) {
+        if (videoEl && videoEl.srcObject) {
+          videoEl.srcObject.getTracks().forEach(track => track.stop());
+          videoEl.srcObject = null;
+        }
+      }
+
+      // --- Registration Logic ---
+      window.startRegisterCamera = async function () {
+        if (!faceModelsLoaded) {
+          Swal.fire({ icon: 'info', title: 'Please Wait', text: 'AI models are still loading...', timer: 2000, showConfirmButton: false });
+          return;
+        }
+        let rawYkpt = document.getElementById("reg-ykpt").value.trim();
+        const regName = document.getElementById("reg-name").value.trim();
+        if (!rawYkpt) return setStatus("reg-status", "❌ Please enter YKPT ID.", "error");
+        if (!regName) return setStatus("reg-status", "❌ Please enter student name.", "error");
+        const ykpt = rawYkpt.replace(/YKPT-/gi, "").trim();
+        document.getElementById("reg-ykpt").value = ykpt;
+        setStatus("reg-status", "⏳ Checking Database...", "loading");
+        document.getElementById("btn-start-reg").disabled = true;
+        try {
+          const dbRef = ref(db);
+          const studentSnap = await get(child(dbRef, `Students/${ykpt}`));
+          if (studentSnap.exists()) {
+            document.getElementById("btn-start-reg").disabled = false;
+            return setStatus("reg-status", `❌ Student ID ${ykpt} is already registered!`, "error");
+          }
+          const video = document.getElementById("reg-video");
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+          video.srcObject = stream;
+          video.onloadedmetadata = () => { video.play(); };
+          setStatus("reg-status", "📷 Scanning face (3 captures for accuracy)... Look straight at camera.", "loading");
+          let scanCount = 0;
+          const descriptors = [];
+          const interval = setInterval(async () => {
+            if (video.videoWidth === 0) return;
+            const detection = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ scoreThreshold: 0.6 })).withFaceLandmarks().withFaceDescriptor();
+            if (detection) {
+              descriptors.push(Array.from(detection.descriptor));
+              scanCount++;
+              setStatus("reg-status", `📷 Face captured ${scanCount}/3... Hold still.`, "loading");
+              if (scanCount < 3) return;
+              clearInterval(interval);
+              // Average the 3 descriptors for better accuracy
+              const avgDescriptor = new Array(128).fill(0);
+              for (let i = 0; i < 128; i++) {
+                for (let j = 0; j < descriptors.length; j++) { avgDescriptor[i] += descriptors[j][i]; }
+                avgDescriptor[i] /= descriptors.length;
+              }
+              currentDescriptor = avgDescriptor;
+              setStatus("reg-status", "⏳ Checking for duplicate face...", "loading");
+              const allStudentsSnap = await get(child(dbRef, "Students"));
+              let faceDuplicateFound = false;
+              let duplicateID = "";
+              if (allStudentsSnap.exists()) {
+                allStudentsSnap.forEach(childSnap => {
+                  const data = childSnap.val();
+                  if (data.faceDescriptor) {
+                    const registeredDesc = new Float32Array(data.faceDescriptor);
+                    const dist = faceapi.euclideanDistance(currentDescriptor, registeredDesc);
+                    if (dist < 0.4) { faceDuplicateFound = true; duplicateID = data.ykpt; }
+                  }
+                });
+              }
+              if (faceDuplicateFound) {
+                stopMediaTracks(video);
+                document.getElementById("btn-start-reg").disabled = false;
+                Swal.fire({ icon: 'error', title: 'Duplicate Face!', text: `This face is already registered to ID: ${duplicateID}` });
+                return setStatus("reg-status", `❌ Face already registered to: ${duplicateID}`, "error");
+              }
+              setStatus("reg-status", "✅ Face captured & validated!", "success");
+              document.getElementById("btn-save-data").style.display = "block";
+              document.getElementById("btn-start-reg").disabled = false;
+              document.getElementById("btn-start-reg").style.display = "none";
+            }
+          }, 1000);
+        } catch (err) {
+          console.error(err);
+          document.getElementById("btn-start-reg").disabled = false;
+          setStatus("reg-status", "❌ Camera access denied or error.", "error");
+        }
+      };
+
+      window.saveRegistration = async function () {
+        const ykpt = document.getElementById("reg-ykpt").value.trim();
+        const name = document.getElementById("reg-name").value.trim();
+        const major = document.getElementById("reg-major").value.trim();
+        const email = document.getElementById("reg-email").value.trim();
+        if (!ykpt || !currentDescriptor) return;
+        try {
+          setStatus("reg-status", "⏳ Saving data...", "loading");
+          await set(ref(db, "Students/" + ykpt), {
+            ykpt, name, major, studentMail: email,
+            faceDescriptor: currentDescriptor,
+            registeredAt: new Date().toISOString(),
+          });
+          setStatus("reg-status", "🎉 Registration Complete!", "success");
+          Swal.fire({ icon: 'success', title: 'Registered!', text: `${name} (${ykpt}) saved successfully.`, timer: 2500, showConfirmButton: false });
+          document.getElementById("btn-save-data").style.display = "none";
+          document.getElementById("btn-start-reg").style.display = "block";
+          stopMediaTracks(document.getElementById("reg-video"));
+          document.getElementById("reg-ykpt").value = "";
+          document.getElementById("reg-name").value = "";
+          document.getElementById("reg-major").value = "";
+          document.getElementById("reg-email").value = "";
+          currentDescriptor = null;
+        } catch (e) {
+          Swal.fire('Error', 'Failed to save to database.', 'error');
+          setStatus("reg-status", "❌ Error saving.", "error");
+        }
+      };
+
+      // --- Roll Call Logic ---
+      function startQRScanner() {
+        setStatus("roll-status", "🔍 Starting QR Scanner...", "loading");
+        if (html5QrcodeScanner) { try { html5QrcodeScanner.stop().catch(()=>{}); html5QrcodeScanner.clear(); } catch (e) {} html5QrcodeScanner = null; }
+        document.getElementById("qr-reader").innerHTML = "";
+        html5QrcodeScanner = new Html5Qrcode("qr-reader");
+        const config = { fps: 10, disableFlip: false };
+        html5QrcodeScanner.start(
+          { facingMode: "environment" }, config,
+          async (decodedText) => {
+            scannedQRData = decodedText;
+            const parts = decodedText.split("/");
+            let rawText = parts.length > 1 ? parts[1].trim() : decodedText.trim();
+            scannedYKPT = rawText.replace(/YKPT-/gi, "").trim();
+            html5QrcodeScanner.stop().then(() => { document.getElementById("qr-reader").innerHTML = ""; }).catch(err => {});
+            setStatus("roll-status", `⏳ Checking ${scannedYKPT}...`, "loading");
+            try {
+              const dbRef = ref(db);
+              const snapshot = await get(child(dbRef, `Students/${scannedYKPT}`));
+              if (snapshot.exists()) {
+                const data = snapshot.val();
+                registeredDescriptor = new Float32Array(data.faceDescriptor);
+                // Check duplicate for same period today
+                const selectedPeriod = document.getElementById("roll-period").value;
+                const today = new Date().toLocaleDateString();
+                const attSnap = await get(child(dbRef, "Attendance"));
+                let alreadyRecorded = false;
+                if (attSnap.exists()) {
+                  attSnap.forEach(attChild => {
+                    const att = attChild.val();
+                    if (att.ykpt === scannedYKPT && att.period === selectedPeriod) {
+                      const attDate = new Date(att.timestamp).toLocaleDateString();
+                      if (attDate === today) alreadyRecorded = true;
                     }
-                } catch (error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Connection Error',
-                        text: 'Failed to send message. Please check your connection.',
-                        background: '#111a2e',
-                        color: '#f8fafc',
-                        confirmButtonColor: '#0ea5e9'
-                    });
-                } finally {
-                    button.innerHTML = 'Send Message <i class="bx bx-send"></i>';
-                    button.style.opacity = '1';
-                    button.disabled = false;
+                  });
                 }
-            });
-        }
-
-        // --- Education Accordion ---
-        $(document).ready(function() {
-            $('.education-card').on('click', function() {
-                $(this).find('.edu-details').slideToggle(300);
-                $(this).find('.arrow-icon').toggleClass('rotate');
-                $(this).toggleClass('active-card');
-            });
+                if (alreadyRecorded) {
+                  Swal.fire({ icon: 'warning', title: 'Already Recorded!', text: `${scannedYKPT} is already marked for ${selectedPeriod} today.`, timer: 3000, showConfirmButton: false });
+                  setStatus("roll-status", `⚠️ Already recorded for this period!`, "error");
+                  setTimeout(startQRScanner, 3000);
+                  return;
+                }
+                setStatus("roll-status", `✅ Found! Verify face now.`, "success");
+                document.getElementById("scanned-ykpt-display").innerText = `${data.name || scannedYKPT} (${scannedYKPT})`;
+                document.getElementById("face-verification-section").style.display = "block";
+                startVerifyCamera();
+              } else {
+                Swal.fire({ icon: 'error', title: 'Not Found', text: `Student ID "${scannedYKPT}" is not registered.`, timer: 3000, showConfirmButton: false });
+                setStatus("roll-status", `❌ Not registered.`, "error");
+                setTimeout(startQRScanner, 3000);
+              }
+            } catch (dbError) {
+              setStatus("roll-status", `❌ Database Error.`, "error");
+            }
+          },
+          (errorMessage) => {}
+        ).then(() => {
+          setStatus("roll-status", "📷 Scanning QR Code...", "loading");
+        }).catch(err => {
+          setStatus("roll-status", "❌ Camera Access Denied.", "error");
         });
+      }
 
-        // --- Typing Animation ---
-        const text = "Kyaw Nyein Chan Htwe (yUto)";
-        const speed = 100;
-        let i = 0;
-        function textwrite() {
-            if (i < text.length) {
-                document.getElementById("text").innerHTML += text.charAt(i);
-                i++;
-                setTimeout(textwrite, speed);
-            }
+      async function startVerifyCamera() {
+        const video = document.getElementById("verify-video");
+        try {
+          await new Promise(resolve => setTimeout(resolve, 500));
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+          video.srcObject = stream;
+          video.onloadedmetadata = () => { video.play(); };
+        } catch (err) {
+          setStatus("roll-status", "❌ Face Camera denied.", "error");
         }
+      }
 
-        // --- On Page Load ---
-        window.onload = function() {
-            textwrite();
-            revealSections();
-            // Activate middle card on load
-            if (cards.length > 1) {
-                cards[1].classList.add('active');
-                cards[1].scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' });
+      window.verifyFace = async function () {
+        const video = document.getElementById("verify-video");
+        if (video.videoWidth === 0) return setStatus("roll-status", "⏳ Camera loading...", "loading");
+        document.getElementById("btn-verify").disabled = true;
+        setStatus("roll-status", "🔍 Analyzing face (2 scans)...", "loading");
+        try {
+          // Take 2 scans for better accuracy
+          const verifyDescriptors = [];
+          for (let attempt = 0; attempt < 2; attempt++) {
+            const det = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ scoreThreshold: 0.6 })).withFaceLandmarks().withFaceDescriptor();
+            if (det) verifyDescriptors.push(det.descriptor);
+            if (attempt < 1) await new Promise(r => setTimeout(r, 500));
+          }
+          if (verifyDescriptors.length === 0) {
+            document.getElementById("btn-verify").disabled = false;
+            return setStatus("roll-status", "❌ No face detected.", "error");
+          }
+          // Average descriptors
+          const avgDesc = new Float32Array(128);
+          for (let i = 0; i < 128; i++) {
+            let sum = 0;
+            for (const d of verifyDescriptors) sum += d[i];
+            avgDesc[i] = sum / verifyDescriptors.length;
+          }
+          const distance = faceapi.euclideanDistance(avgDesc, registeredDescriptor);
+          if (distance < 0.5) {
+            setStatus("roll-status", "✅ Face Matched! Saving...", "success");
+            const now = new Date();
+            const qrParts = scannedQRData.split("/");
+            const selectedPeriod = document.getElementById("roll-period").value;
+            try {
+              const newRef = push(ref(db, "Attendance"));
+              await set(newRef, {
+                timestamp: now.toISOString(),
+                timeString: now.toLocaleString(),
+                date: now.toLocaleDateString(),
+                period: selectedPeriod,
+                name: qrParts[0] || "Unknown",
+                ykpt: scannedYKPT,
+                major: qrParts[2] || "N/A",
+                studentMail: qrParts[4] || "N/A",
+                status: "Present",
+              });
+              Swal.fire({ icon: 'success', title: '🎉 Attendance Recorded!', html: `<b>${scannedYKPT}</b><br>${selectedPeriod}`, timer: 2500, showConfirmButton: false });
+              setStatus("roll-status", `🎉 Recorded for ${scannedYKPT}`, "success");
+              stopMediaTracks(video);
+              document.getElementById("btn-verify").disabled = false;
+              setTimeout(() => { document.getElementById("face-verification-section").style.display = "none"; startQRScanner(); }, 3000);
+            } catch (error) {
+              Swal.fire('Error', 'Failed to record.', 'error');
+              document.getElementById("btn-verify").disabled = false;
             }
-        };
-    </script>
-</body>
+          } else {
+            Swal.fire({ icon: 'error', title: 'Face Mismatch!', text: 'This is not the registered student.', timer: 3000, showConfirmButton: false });
+            setStatus("roll-status", "❌ Face mismatch!", "error");
+            document.getElementById("btn-verify").disabled = false;
+          }
+        } catch (error) {
+          setStatus("roll-status", "❌ Error analyzing face.", "error");
+          document.getElementById("btn-verify").disabled = false;
+        }
+      };
 
+      // --- CSV Export (Excel-compatible with BOM + proper formatting) ---
+      window.exportToCSV = async function () {
+        try {
+          const snapshot = await get(child(ref(db), "Attendance"));
+          if (!snapshot.exists()) return Swal.fire('Info', 'No attendance records.', 'info');
+          // BOM for Excel UTF-8 recognition
+          let csv = "\uFEFF";
+          csv += "No.,Name,YKPT ID,Major,Email,Period,Date,Time,Status\n";
+          let rowNum = 1;
+          snapshot.forEach(c => {
+            const d = c.val();
+            const name = (d.name||"").replace(/"/g,'""');
+            const email = (d.studentMail||"").replace(/"/g,'""');
+            const major = (d.major||"").replace(/"/g,'""');
+            csv += `${rowNum},"${name}","${d.ykpt||""}","${major}","${email}","${d.period||""}","${d.date||""}","${d.timeString||""}","${d.status||"Present"}"\n`;
+            rowNum++;
+          });
+          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = `UCSY_Attendance_${new Date().toISOString().slice(0,10)}.csv`;
+          link.click();
+          URL.revokeObjectURL(link.href);
+          Toast.fire({ icon: 'success', title: 'Attendance CSV Downloaded!' });
+        } catch (e) { Swal.fire('Error', 'Export failed.', 'error'); }
+      };
+
+      window.exportStudentsCSV = async function () {
+        try {
+          const snapshot = await get(child(ref(db), "Students"));
+          if (!snapshot.exists()) return Swal.fire('Info', 'No students found.', 'info');
+          let csv = "\uFEFF";
+          csv += "No.,YKPT ID,Full Name,Major,Email,Registered Date\n";
+          let rowNum = 1;
+          snapshot.forEach(c => {
+            const d = c.val();
+            const name = (d.name||"").replace(/"/g,'""');
+            const email = (d.studentMail||"").replace(/"/g,'""');
+            const major = (d.major||"").replace(/"/g,'""');
+            const date = d.registeredAt ? new Date(d.registeredAt).toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}) : "";
+            csv += `${rowNum},"${d.ykpt||c.key}","${name}","${major}","${email}","${date}"\n`;
+            rowNum++;
+          });
+          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = `UCSY_Students_${new Date().toISOString().slice(0,10)}.csv`;
+          link.click();
+          URL.revokeObjectURL(link.href);
+          Toast.fire({ icon: 'success', title: 'Students CSV Downloaded!' });
+        } catch (e) { Swal.fire('Error', 'Export failed.', 'error'); }
+      };
+    </script>
+  </body>
 </html>
